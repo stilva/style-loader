@@ -16,6 +16,9 @@ var stylesInDom = {},
 	getHeadElement = memoize(function () {
 		return document.head || document.getElementsByTagName("head")[0];
 	}),
+	getFrameTopHead = memoize(function () {
+		return window.top.document.head || window.top.document.getElementsByTagName("head")[0];
+	}),
 	singletonElement = null,
 	singletonCounter = 0,
 	styleElementsInsertedAtTop = [];
@@ -113,6 +116,8 @@ function insertStyleElement(options, styleElement) {
 		styleElementsInsertedAtTop.push(styleElement);
 	} else if (options.insertAt === "bottom") {
 		head.appendChild(styleElement);
+	} else if (options.insertAt === "frameTop") {
+		getFrameTopHead().appendChild(styleElement);
 	} else {
 		throw new Error("Invalid value for parameter 'insertAt'. Must be 'top' or 'bottom'.");
 	}
